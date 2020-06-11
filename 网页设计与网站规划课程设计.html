@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="">
+		<title></title>
+		<style type="text/css">
+			/*css reset 开始*/
+			html,body{height: 100%;overflow: hidden;}/*消除滚动条*/
+			#wrap{height: 100%;}
+			html,body,h1,h2,h3,h4,h5,h6,p,ul,li{margin: 0px;padding: 0px;font: 14px "微软雅黑";}/*通配符的效率是比较低的，因此最好指定具体的标签*/
+			/*如果不将a与img标签转换为块元素，则其表现可能会与我们的预期有一定的偏差*/
+			a{text-decoration: none;display: block;}
+			li{list-style: none;}
+			img{display: block;}
+			/*css reset 结束*/
+			
+			/*公共样式 开始*/
+			.clearfix{*zoom: 1;}/*解决高度塌陷问题*/
+			.clearfix:after{content: "";display: block;clear: both;}/*解决高度塌陷问题*/
+			.commonTitle{color:#009ee0; font-size:80px; line-height:0.8; font-weight:bold; letter-spacing:-5px;}/*标题*/
+			.commonText{color: white;line-height: 1.5;font-size: 15px;}/*字体*/
+			/*公共样式 结束*/
+			
+			/*头部样式 开始*/
+			/*有些浏览器的背景并不是完全的白色，所以需要手动指定；width: 100%;用于流体布局*/
+			#head{background: white!important;width: 100%;}
+			#head .headMain{width: 1100px;height: 80px;margin: 0 auto;position: relative;}
+			#head .headMain > .logo{float: left;margin-top: 30px;}/*让logo浮动，否则导航栏上不去*/
+			#head .headMain > .nav{float: right;margin-top: 50px;}
+			/*下面的position: relative; position: absolute;用于使两个导航栏重叠在一起*/
+			#head .headMain > .nav > .list > li{float: left;margin-left: 40px;position: relative;}
+			#head .headMain > .nav > .list > li .up{
+				color: #000000;
+				position: absolute;
+				/*要完成文字从左到右的颜色覆盖效果，width: 0;overflow: hidden;使鼠标未移入时，不显示覆盖*/
+				width: 0;
+				overflow: hidden;
+				/*使颜色覆盖有从左到右的效果，这里width一定要指定，否则其他属性也会有动画效果*/
+				transition:1s width;}
+			#head .headMain > .nav > .list > li:hover .up{width: 100%;}/*鼠标移入时颜色覆盖效果*/
+			#head .headMain > .arrow{
+				width: 21px; height: 11px;background: url(img/menuIndicator.png);
+				position: absolute;left: 50%;bottom: -11px;transition:1s left;z-index: 2;}
+			/*头部样式 结束*/
+			
+			/*内容区样式 开始*/
+			/*高度已经通过JS来控制；ul需要参照定位，因此开启相对定位；上移的图片隐藏不显示；width: 100%;用于流体布局*/
+			#content{background: gray;position: relative;overflow: hidden;width: 100%;}
+			/*开启绝对定位后宽度消失，因此需要重新指定width；transition用于切换的过渡动画*/
+			#content > .list{position: absolute;left: 0;top:0;width: 100%;transition:1s top;}
+			/*这个相对定位是为了li中的div(下面这一行)的定位和居中；
+			 *background-position用于背景图片居中，内容在背景的左上方（左上角重合），
+			 *背景图片参照于内容，内容小于背景图片，内容减去背景图片，所以所写的百分比是正的，否则是负负得正
+			 *important用于不被后面的代码覆盖*/
+			#content > .list > li{
+				position: relative;background-position:50% 50%!important;
+				overflow: hidden;/*隐藏第二屏出入场动画的飞机*/}
+			#content > .list > li > section{
+				width: 1100px;height: 520px;margin: auto;
+				position: absolute;left: 0;right: 0;top: 0;bottom: 0;/*居中*/}
+								
+					/*第三屏 开始*/
+					#content > .list > .works{background: url(img/bg3.jpg) no-repeat;}
+					#content > .list > .works .works1{margin: 50px 0px 100px 50px;position: relative;z-index: 2;}/*三行英文字*/
+					#content > .list > .works .works2{margin-left: 50px;position: relative;z-index: 2;}
+					#content > .list > .works .works2 > .item{
+						float: left;/*浮动使四张图片排成一行*/
+						width: 220px;height: 133px;
+						margin: 0 1px;/*图片的左右之间有1像素的空隙*/
+						position: relative;overflow: hidden;}
+					#content > .list > .works .works2 > .item:last-of-type{width: 332px}/*第四张图片*/
+					
+					#content > .list > .works .works2 > .item .mask{
+						position: absolute;left: 0;right: 0;top: 0;bottom: 0;/*遮罩层和图片一样大*/
+						box-sizing: border-box;padding: 10px;/*文字的四周有空隙*/
+						background: #000000;opacity: 0;/*遮罩层*/
+						color: white;/*文字为白色*/
+						transition:1s opacity;/*过渡动画*/}
+					#content > .list > .works .works2 > .item .mask .icon{/*放大镜图标*/
+						width: 32px;height: 34px;margin: 0 auto;margin-top: 10px;
+						background: url(img/zoomico.png) no-repeat;
+						transition:1s background-position;}
+					/*放大镜图标变为蓝色*/
+					#content > .list > .works .works2 > .item .mask .icon:hover{background-position: 0 -35px;}
+					#content > .list > .works .works2 > .item:hover .mask{opacity:0.8;}/*遮罩层的透明度*/
+					/*鼠标移入时图片放大并旋转*/
+					#content > .list > .works .works2 > .item:hover img{transform: rotate(30deg) scale(1.5);}
+					#content > .list > .works .works2 > .item img{transition:1s transform;}	
+					
+					/*机器人*/
+					#content > .list > .works .works3{
+						width: 167px;height: 191px;background: url(img/robot.png) no-repeat;
+						position: absolute;left: 900px;top: 170px;
+						/*移动的动画效果*/
+						animation: works3Move 4s linear infinite;
+						z-index: 2;/*提升层级，让出入场效果的笔在下面*/}
+					@keyframes works3Move{
+						0%{
+							transform: translateX(0px) rotateY(0deg);
+						}
+						49%{
+							transform: translateX(-490px) rotateY(0deg);
+						}
+						50%{
+							transform: translateX(-500px) rotateY(180deg);
+						}
+						100%{
+							transform: translateX(0px) rotateY(180deg);
+						}
+					}
+					/*第三屏 结束*/
+					
+					/*第二屏 开始*/
+					#content > .list > .course{background: url(img/bg2.jpg) no-repeat;}
+					/*下面三行的定位与提升层级，使入场效果的飞机不会盖住主体*/
+					#content > .list > .course .course1{margin: 50px;position: relative;z-index: 2;}/*三行大字*/
+					#content > .list > .course .course2{margin-left: 50px;width: 400px;position: relative;z-index: 2;}/*小字*/
+					#content > .list > .course .course3{width: 480px;position: absolute;z-index: 2;right: 50px;top: 70px;}
+					#content > .list > .course .course3 .item{float: left;width: 120px;height: 132px;}/*图片*/
+					/*“+”号背景*/
+					#content > .list > .course .course3 .line{
+						position: absolute;/*span没有宽高，因此开启绝对定位*/
+						top: -7px;width: 9px;height: 410px;
+						background: url(img/plus_row.png) no-repeat;}
+					/*调整“+”号背景的位置*/
+					#content > .list > .course .course3 .line:nth-of-type(1){left: -5px;}
+					#content > .list > .course .course3 .line:nth-of-type(2){left: 115px;}
+					#content > .list > .course .course3 .line:nth-of-type(3){left: 235px;}
+					#content > .list > .course .course3 .line:nth-of-type(4){left: 355px;}
+					#content > .list > .course .course3 .line:nth-of-type(5){left: 475px;}
+					
+					#content > .list > .course .course3 .item{
+						float: left;width: 120px;height: 132px;position: relative;
+						perspective: 500px;transform-style: preserve-3d;/*景深与3D舞台*/}
+					#content > .list > .course .course3 .item .face,
+					#content > .list > .course .course3 .item .backFace{
+						position: absolute;left: 0;top: 0;width: 100%;height: 100%;
+						box-sizing: border-box;padding: 15px;/*文字周围有空隙*/
+						transition:1s transform;/*鼠标移入时旋转的过渡效果*/}
+					
+					/*背景图片居中*/
+					#content > .list > .course .course3 .item .backFace{background-position: 50% 50%!important;}
+					/*背景图片*/
+					#content > .list > .course .course3 .item:nth-of-type(1) .backFace{background: url(img/apcoa.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(2) .backFace{background: url(img/apcoa.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(3) .backFace{background: url(img/bks.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(4) .backFace{background: url(img/gu.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(5) .backFace{background: url(img/hlx.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(6) .backFace{background: url(img/lbs.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(7) .backFace{background: url(img/leonberg.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(8) .backFace{background: url(img/pcwelt.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(9) .backFace{background: url(img/tata.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(10) .backFace{background: url(img/bks.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(11) .backFace{background: url(img/bks.png) no-repeat;}
+					#content > .list > .course .course3 .item:nth-of-type(12) .backFace{background: url(img/bks.png) no-repeat;}
+					#content > .list > .course .course3 .item .face{
+						/*将文字旋转并隐藏*/
+						transform: rotateY(180deg);
+						backface-visibility: hidden;
+						background: #009ee0;color: white;}
+					
+					/*鼠标移入时，让字转回来*/
+					#content > .list > .course .course3 .item:hover .face{transform: rotateY(360deg);}
+					/*背景图片也跟着一起转*/
+					#content > .list > .course .course3 .item:hover .backFace{transform: rotateY(180deg);}
+					/*第二屏 结束*/
+					
+					/*第一屏 开始*/
+					#content > .list > .home{background: url(img/bg1.jpg) no-repeat;}/*背景图片*/
+					/*主体*/
+					#content > .list > .home .home1{
+						width: 100%;height: 100%;
+						/*景深和3D舞台*/
+						perspective: 1000px;transform-style: preserve-3d;}
+					/*让四个主体叠在一起*/
+					#content > .list > .home .home1 > li{
+						position: absolute;left: 0;right: 0;top: 0;bottom: 0;
+						visibility: hidden;}/*每次只显示一个主体，其他的主体都隐藏，所以先全部隐藏*/
+					/*四个主体的颜色*/
+					#content > .list > .home .home1 > li:nth-child(1){background:#dc6c5f;}
+					#content > .list > .home .home1 > li:nth-child(2){background:#95dc84;}
+					#content > .list > .home .home1 > li:nth-child(3){background:#64b9d2;}
+					#content > .list > .home .home1 > li:nth-child(4){background:#000000;}
+					/*文字的颜色、居中*/
+					#content > .list > .home .home1 > li > div{color: white;text-align: center;margin-top: 200px;}
+					#content > .list > .home .home1 > li .active{visibility: visible;}/*active表示是要显示的主体*/
+					
+					/*让下方的小圆点居中
+					 *外部容器的宽度撑满整个容器，然后通过text-align: center控制内部的inline-block元素，使其居中*/
+					#content > .list > .home .home2{position: absolute;left: 0;right: 0;bottom:0;text-align: center;}
+					/*下方的小圆点的样式*/
+					#content > .list > .home .home2 > li {
+						border-radius:50% ;width: 20px;height: 20px;background: rgba(255,255,255,0.5);display: inline-block;
+						/*阴影   cursor:pointer;表示鼠标移入时变为手的图形*/
+						box-shadow: 0 0 4px rgba(25,25,25,0.8);cursor:pointer;}
+					/*当前选中的小圆点 cursor:default;表示鼠标移入已选中的小圆点时是默认的箭头图形 */	
+					#content > .list > .home .home2 > li.active{background: white;cursor:default;}
+					
+						/*小圆点从左往右点击 leftHide(左边的进去隐藏)  rightShow(右边的出来显示)*/
+						/*左边的进去隐藏*/
+						#content > .list > .home .home1 > li.leftHide{visibility: hidden;animation: 1s leftHide 1 linear;}
+						/*右边的出来显示*/
+						#content > .list > .home .home1 > li.rightShow{visibility: visible;animation: 1s rightShow 1 linear;}
+						@keyframes leftHide{
+							0%{visibility: visible;}/*刚开始是显示的，然后再隐藏*/
+							50%{transform: translateX(-40%) rotateY(30deg) scale(.8);}/*向左移、旋转、缩小*/
+							100%{transform: translateZ(-200px);}/*远离*/
+						}
+						@keyframes rightShow{
+							0%{visibility: hidden;transform: translateZ(-200px);}
+							50%{transform: translateX(40%) rotateY(-30deg) scale(.8);}
+							100%{}
+						}
+						/*小圆点从右往左点击 leftShow(左边的出来显示)  rightHide(右边的进去隐藏)*/
+						#content > .list > .home .home1 > li.leftShow{visibility: visible;animation: 1s leftShow 1 linear;}
+						#content > .list > .home .home1 > li.rightHide{visibility: hidden;animation: 1s rightHide 1 linear;}
+						@keyframes leftShow{
+							0%{visibility: hidden;transform: translateZ(-200px);}
+							50%{transform: translateX(-40%) rotateY(30deg) scale(.8);}
+							100%{}
+						}
+						@keyframes rightHide{
+							0%{visibility: visible;}
+							50%{transform: translateX(40%) rotateY(-30deg) scale(.8);}
+							100%{transform: translateZ(-200px);}
+						}
+					/*第一屏 结束*/		
+					
+					/*第四屏 开始*/
+					#content > .list > .about{background: url(img/bg3.jpg) no-repeat;}/*背景图片*/
+					#content > .list > .about .about1{margin: 50px 0 100px 50px;}/*三行大字*/
+					#content > .list > .about .about2{margin-left: 50px; width: 400px;}/*左下角的小字*/
+					/*线背景*/
+					#content > .list > .about .about4{
+						width: 357px;height: 998px;position: absolute;
+						left:50%;top:-100px;background: url(img/greenLine.png) no-repeat;}
+					/*图片*/
+					#content > .list > .about .about3 > .item{
+						width: 260px;height: 200px;border: 5px solid rgba(255,255,255,0.5);
+						border-radius: 8px;position: absolute;
+						z-index: 2;/*让框在线的上方*/
+						overflow: hidden;/*因为span不能使用overflow，因此给上一层的容器，所以放在这里*/}
+
+					#content > .list > .about .about3 > .item:nth-child(1){left:750px; top:50px}/*第一张图片*/
+					#content > .list > .about .about3 > .item:nth-child(2){left:600px; top:290px}/*第二张图片*/
+								
+					#content > .list > .about .about3 > .item > span,#content > .list > .about .about3 > .item > ul{
+						position: absolute;left: 0;top:0;bottom: 0;right: 0;
+					}
+					/*第一张图片*/
+					#content > .list > .about .about3 > .item:nth-child(1) > span{
+						background: url(img/about2.jpg) no-repeat;
+						transform: scale(1.5);/*默认放大，隐藏溢出部分，鼠标移入时再缩小*/
+						transition:1s transform;/*过渡动画*/}
+					/*第二张图片*/															
+					#content > .list > .about .about3 > .item:nth-child(2) > span{
+						background: url(img/about4.jpg) no-repeat;
+						transform: scale(1.5);/*默认放大，鼠标移入时再缩小*/
+						transition:1s transform;/*过渡动画*/}
+					#content > .list > .about .about3 > .item:hover span{transform: scale(1);}/*鼠标移入时恢复原来的大小*/
+					/*用于图片的偏移*/
+					#content > .list > .about .about3 > .item > ul > li{float: left;position: relative;overflow: hidden;}
+					#content > .list > .about .about3 > .item > ul > li > img{position: absolute;transition: 1s top,1s left;}
+					/*第四屏 结束*/		
+					
+					/*第五屏 开始*/
+					#content > .list > .team{background: url(img/bg5.jpg) no-repeat;}/*背景图片*/
+					/*两段小字*/
+					#content > .list > .team .team1{width: 400px;margin: 50px;float: left;}
+					#content > .list > .team .team2{width: 400px;margin: 50px;float: right;}
+					#content > .list > .team .team3{
+						width: 944px;height: 448px;position: absolute;left: 50%;
+						margin-left: -472px;top: 250px;}
+					#content > .list > .team .team3 ul{position: relative;height: 100%;}					
+					#content > .list > .team .team3 ul>li{
+						width: 118px;height: 100%;background: url(img/team.png) no-repeat;
+						float: left;transition:1s opacity;}
+					#content > .list > .team .team3 ul>li:nth-child(1){background-position:0,0;}
+					#content > .list > .team .team3 ul>li:nth-child(2){background-position:-118px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(3){background-position:-236px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(4){background-position:-354px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(5){background-position:-472px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(6){background-position:-590px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(7){background-position:-708px,0;}
+					#content > .list > .team .team3 ul>li:nth-child(8){background-position:-826px,0;}
+					#content > .list > .team canvas{position: absolute;top: 0px;}
+					/*第五屏 结束*/
+					
+				/*右边的五个圆点 开始*/
+				#content > .dot{position: fixed;right: 10px;top: 50%;}
+				#content > .dot >li{width: 10px;height: 10px;border: 5px solid pink;margin-top: 10px;border-radius:50% ;} 
+				#content > .dot >li.active{background: white;}
+				/*右边的五个圆点 结束*/
+				
+			/*出入场动画 开始*/
+			#content > .list > .home .home1,
+			#content > .list > .home .home2{transition:1s transform,1s opacity;}
+			/*第二屏的三架飞机*/
+			#content  .course .plane1{ width:359px; height:283px; background:url(img/plane1.png) no-repeat; position:absolute; left:300px; top:-100px; transition:1s;}
+			#content  .course .plane2{ width:309px; height:249px; background:url(img/plane2.png) no-repeat; position:absolute; left:-100px; top:200px; transition:1s;}
+			#content  .course .plane3{ width:230px; height:182px; background:url(img/plane3.png) no-repeat; position:absolute; left:300px; top:400px; transition:1s;}
+			/*第三屏的三支笔*/
+			#content  .works .pencel1{ width:180px; height:97px; background:url(img/pencel1.png) no-repeat; position:absolute; transition:1s; left:500px; top:0;}
+			#content  .works .pencel2{ width:268px; height:38px; background:url(img/pencel2.png) no-repeat; position:absolute; transition:1s; left:300px; top:250px;}
+			#content  .works .pencel3{ width:441px; height:231px; background:url(img/pencel3.png) no-repeat; position:absolute; transition:1s; left:650px; top:300px;}
+			/*第四屏*/
+			#content > .list > .about .about3 > .item,
+			/*第五屏*/
+			#content > .list > .team .team1,
+			#content > .list > .team .team2
+			{transition:1s transform;}
+			/*出入场动画 结束*/
+			/*内容区样式 结束*/
+			
+			/*音频*/
+			/*logo旁的频谱按钮*/
+			#head > .headMain .music{
+				width: 14px;height: 14px;background: url(img/musicon.gif);
+				float: left;margin: 50px 0 0 5px;}
+			/*音频 结束*/
+
+			/*开机动画 开始*/
+			#mask{
+				height: 100%;width: 100%;position: absolute;
+				z-index: 100;/*设置层级，能覆盖住每一屏的内容*/}
+			#mask .up{width: 100%;height: 50%;background: deepskyblue;transition:1s height;}
+			#mask .down{
+				width: 100%;height: 50%;background: deepskyblue;transition:1s height;
+				position: absolute;bottom: 0;/*down面向下移动*/}
+			/*中间的线*/				
+			#mask .line{
+				height: 4px;width: 0;background: white;
+				position: absolute;
+				left:0;top:50%;margin-top:-2px;/*line是div，是块级元素，会被挤到下方；使其居中*/
+				z-index: 101;/*设置层级为最高*/
+				transition:1s width;/*过渡效果*/}
+			/*开机动画 结束*/
+		</style>
+		<!--分辨率范围:1200 - 2000-->
+	</head>
+	<body>
+		<section id="wrap">
+			<!--流体布局-->
+			<!--开机动画-->
+			<div id="mask">
+				<div class="up"></div>
+				<div class="down"></div>
+				<span class="line"></span>
+			</div>
+			<header id="head">
+				<!--固定布局-->
+				<div class="headMain">
+					<h1 class="logo">
+						<a href="javascript:;">
+							<img src="img/logo.png"/>
+						</a>
+					</h1>
+					<nav class="nav">
+						<ul class="list clearfix">
+							<li>
+								<a href="javascript:;">
+									<div class="up"><img src="img/home_gruen.png"/></div>
+									<div class="down"><img src="img/home.png"/></div>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<div class="up">Course</div>
+									<div class="down">Course</div>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<div class="up">Works</div>
+									<div class="down">Works</div>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<div class="up">About</div>
+									<div class="down">About</div>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<div class="up">Team</div>
+									<div class="down">Team</div>
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="arrow"></div>
+					<!--音频-->
+					<div class="music">
+						<audio src="img/audio.mp3" loop></audio>
+					</div>
+				</div>
+			</header>
+			<section id="content">
+				<ul class="list">
+					<!--第一屏-->
+					<li class="home">
+						<section>
+							<!--主体-->
+							<ul class="home1">
+								<li class="commonTitle active leftShow">
+									<div class="item">one layer</div>
+								</li>
+								<li class="commonTitle rightHide">
+									<div class="item">two layer</div>
+								</li>
+								<li class="commonTitle">
+									<div class="item">three layer</div>
+								</li>
+								<li class="commonTitle">
+									<div class="item">four layer</div>
+								</li>
+							</ul>
+							<!--下方的小圆点-->
+							<ul class="home2">
+								<li class="active"></li>
+								<li></li>
+								<li></li>
+								<li></li>
+							</ul>
+						</section>
+					</li>
+					<!--第二屏-->
+					<li class="course">
+						<section>
+							<!--三行大字-->
+							<header class="course1 commonTitle">
+								<span>EINIGE</span>  <br />
+								<span>UNSERER</span> <br />
+								<span>KUNDEN</span>  <br />
+							</header>
+							<!--小字-->
+							<div class="course2 commonText">
+								<p>
+									Das Kundenvertrauen in unsere Kompetenz ist die notwendige Basis einer erfolgreichen Zusammenarbeit, gleichzeitig aber auch das größte Lob, das man uns entgegenbringen kann. 
+									<br />
+									Diese und viele weitere große und kleine Kunden vertrauen uns seit Jahren, was uns stolz macht, und dafür sagen wir an dieser Stelle einfach mal.
+								</p>
+							</div>
+							<!--图片-->
+							<div class="course3">
+								<!-- “+”号背景 -->
+								<span class="line"></span>
+								<span class="line"></span>
+								<span class="line"></span>
+								<span class="line"></span>
+								<span class="line"></span>
+								<div class="item">
+									<div class="face">我是背面</div>
+									<div class="backFace">djaskdjalks</div>
+								</div>
+								<div class="item">
+									<!--backFace放背景图片，face放字-->
+									<!--将文字图片旋转180°并隐藏，正面显示的是背景图片，
+											这样就能形成文字和背景图片分别在一张纸正反两面旋转的效果-->
+									<div class="backFace" >djaskdjalks</div>
+									<div class="face" >我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+								<div class="item">
+									<div class="backFace"></div>
+									<div class="face">我是背面</div>
+								</div>
+							</div>
+							<!--三架飞机-->
+							<div class="plane1"></div>
+					    <div class="plane2"></div>
+					    <div class="plane3"></div>
+						</section>
+					</li>
+					<!--第三屏-->
+					<li class="works">
+						<section>
+							<!--三行大字-->
+							<header class="works1 commonTitle">
+								<span>EINBLICK</span> 	<br />
+								<span>ERKENNTNIS</span> <br />
+								<span>ERGEBNIS</span>	  <br />
+							</header>
+							<!--图片-->
+							<div class="works2">
+								<div class="item">
+									<img src="img/worksimg1.jpg"/>
+									<div class="mask"><!--鼠标移入图片时有遮罩层-->
+										<span>我是文字</span>
+										<div class="icon"></div>
+									</div>
+								</div>
+								<div class="item">
+									<img src="img/worksimg2.jpg"/>
+									<div class="mask"><!--鼠标移入图片时有遮罩层-->
+										<span>我是文字</span>
+										<div class="icon"></div>
+									</div>
+								</div>
+								<div class="item">
+									<img src="img/worksimg3.jpg"/>
+									<div class="mask"><!--鼠标移入图片时有遮罩层-->
+										<span>我是文字</span>
+										<div class="icon"></div>
+									</div>
+								</div>
+								<div class="item">
+									<img src="img/worksimg4.jpg"/>
+									<div class="mask"><!--鼠标移入图片时有遮罩层-->
+										<span>我是文字</span>
+										<div class="icon"></div>
+									</div>
+								</div>
+							</div>
+							<!--机器人-->
+							<div class="works3"></div>
+							<!--三支笔-->
+							<div class="pencel1"></div>
+							<div class="pencel2"></div>
+							<div class="pencel3"></div>
+						</section>
+					</li>
+					<!--第四屏-->
+					<li class="about">
+						<section>
+							<!--三行大字-->
+							<header class="about1 commonTitle">
+								<span>DIE</span> <br />
+								<span>SPEZIELLE</span> <br />
+								<span>VIELFALT</span> <br />
+							</header>
+							<!--左下角的小字-->
+							<div class="about2">
+								<p class="commonText">Der bunte Medienmix ist die Faszination die uns antreibt und das, was man an uns schätzt. Von A bis Z und von vorne bis hinten nehmen wir Ihr Projekt unter unsere Fittiche und lassen es zu etwas Großartigem heranwachsen.</p>
+							</div>
+							<!--两张图片-->
+							<div class="about3">
+								<div class="item">
+									<span></span>
+									<ul data-src="img/about1.jpg"></ul>
+								</div>
+								<div class="item">
+									<span></span>
+									<ul data-src="img/about3.jpg"></ul>
+								</div>
+							</div>
+							<!--线背景-->
+							<div class="about4"></div>
+						</section>
+					</li>
+					<!--第五屏-->
+					<li class="team">
+						<section>
+							<!--两行大字-->
+							<header class="team1 commonTitle">
+								<span>WIR SIND</span> <br />
+								<span>VOXELAIR</span> <br />
+							</header>
+							<!--右边的两段小字-->
+							<div class="team2">
+								<p class="commonText">Wir sind seit 2002 eine Full-Service-Werbeagentur mit Stammsitz in Heimsheim, zwischen Stuttgart und Karlsruhe. </p>
+								<p class="commonText">Über 60 Jahre Erfahrung vereinen das gesamte VoxelAir-Team. Dabei hat jedes Voxel neben professionellem Allroundwissen auch sein ganz spezielles Gebiet, um selbst die individuellsten Kundenwünsche schnell und kompetent umzusetzen.</p>
+							</div>
+							<div class="team3">
+								<!--ul中不应该加canvas-->
+								<ul>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li></li>
+								</ul>
+							</div>
+						</section>
+					</li>
+				</ul>
+				<!--右边的五个圆点-->
+				<ul class="dot">
+					<li class="active"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>				
+			</section>
+		</section>
+	</body>
+	<script type="text/javascript">
+		window.onload=function(){
+			//获取dom元素
+			var arrowEl = document.querySelector("#head .headMain > .arrow");//小箭头
+			var liNodes = document.querySelectorAll("#head .headMain > .nav > .list > li");//获取所有的li
+			var upNodes = document.querySelectorAll("#head .headMain > .nav > .list > li .up");;//获取所有的up
+			var firstLiNode  = liNodes[0];//第一个li
+			var firstUpNode  = firstLiNode.querySelector(".up");//获取第一个li的up
+			 
+			var head = document.querySelector("#head");//头部
+			var content = document.querySelector("#content");//内容区
+			var cLiNodes = document.querySelectorAll("#content .list > li");//内容区的所有li
+			var cList =  document.querySelector("#content .list");//ul
+			
+			var home2LiNodes = document.querySelectorAll("#content > .list > .home .home2 > li");//所有的li
+			var home1LiNodes = document.querySelectorAll("#content > .list > .home .home1 > li");
+			var home1 = document.querySelector("#content > .list > .home .home1");
+			
+			var aboutUls = document.querySelectorAll("#content > .list > .about .about3 > .item > ul");//ul：图片路径
+			
+			var dotLis = document.querySelectorAll("#content > .dot > li");//所有的右边的圆点
+			
+			var team3 = document.querySelector("#content > .list > .team  .team3");
+			var team3Ul = document.querySelector("#content > .list > .team .team3 ul");
+			var team3Lis = document.querySelectorAll("#content > .list > .team .team3 ul>li");
+			
+			//上一屏
+			var preIndex = 0;
+			
+			/*音频*/
+			var music = document.querySelector("#head > .headMain .music");
+			var audio = document.querySelector("#head > .headMain .music audio");
+			
+			/*开机动画 开始*/
+			var mask = document.querySelector("#mask");
+			var line = document.querySelector("#mask .line");
+			var mians = document.querySelectorAll("#mask div");
+			
+			loadingAn();
+			function loadingAn(){
+				//模拟加载图片的请求
+				var arr = ['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg','bg5.jpg','about1.jpg','about2.jpg','about3.jpg','about4.jpg','worksimg1.jpg','worksimg2.jpg','worksimg3.jpg','worksimg4.jpg','team.png','greenLine.png'];
+				var flag = 0;//模拟图片加载成功
+				for(var i=0; i<arr.length; i++){//模拟加载情况
+					var img = new Image();
+					img.src="img/"+arr[i];
+					img.onload=function(){//模拟图片加载成功
+						flag++;
+						line.style.width = flag/arr.length*100+"%";
+					}
+				}
+				
+				line.addEventListener("transitionend",function(){
+					if(flag === arr.length){//当线全部加载完成后，两个面才开始消失
+						for(var i=0; i<mians.length; i++){
+							mians[i].style.height = 0+"px";
+						}
+						this.style.display = "none";//加载完成后，线消失
+					}
+				})
+				
+				/*开机动画加载完毕后，消除相应的HTML结构*/
+				mians[0].addEventListener("transitionend",function(){
+					mask.remove();
+					audio.play();
+					home3D();
+				})
+			}
+			/*开机动画 结束*/
+			
+			//音频
+			music.onclick=function(){
+				if(audio.paused){
+					audio.play();
+					music.style.background = "url(img/musicon.gif)";
+				}else{
+					audio.pause();
+					music.style.background = "url(img/musicoff.gif)";
+				}
+			}
+
+			/*出入场动画 开始*/
+			//inAn表示入场动画，outAn表示出场动画
+			//对象数组
+			var anArr=[
+				{/*第一屏*/
+					inAn:function(){
+						var home1 = document.querySelector("#content > .list > .home .home1");
+						var home2 = document.querySelector("#content > .list > .home .home2");
+						/*主体恢复到原来的位置*/
+						home1.style.transform="translateY(0px)";
+						home2.style.transform="translateY(0px)";
+						home1.style.opacity=1;
+						home2.style.opacity=1;
+					},
+					outAn:function(){
+						var home1 = document.querySelector("#content > .list > .home .home1");
+						var home2 = document.querySelector("#content > .list > .home .home2");
+						/*将主体偏移并设置为全透明*/
+						home1.style.transform="translateY(-400px)";
+						home2.style.transform="translateY(100px)";
+						home1.style.opacity=0;
+						home2.style.opacity=0;
+					}
+					// 其他几部分类似
+				},
+				{/*第二屏*/
+					inAn:function(){
+						var plane1 = document.querySelector("#content  .course .plane1");
+						var plane2 = document.querySelector("#content  .course .plane2");
+						var plane3 = document.querySelector("#content  .course .plane3");
+						/*入场后三架飞机恢复到原来的位置*/
+						plane1.style.transform = "translate(0px,0px)";
+						plane2.style.transform = "translate(0px,0px)";
+						plane3.style.transform = "translate(0px,0px)";
+					},
+					outAn:function(){
+						var plane1 = document.querySelector("#content  .course .plane1");
+						var plane2 = document.querySelector("#content  .course .plane2");
+						var plane3 = document.querySelector("#content  .course .plane3");
+						/*三架飞机的偏移*/
+						plane1.style.transform = "translate(-200px,-200px)";
+						plane2.style.transform = "translate(-200px,200px)";
+						plane3.style.transform = "translate(200px,-200px)";
+					}
+				},
+				{/*第三屏*/
+					inAn:function(){
+						var pencel1 = document.querySelector("#content .works .pencel1");
+						var pencel2 = document.querySelector("#content .works .pencel2");
+						var pencel3 = document.querySelector("#content .works .pencel3");
+						
+						pencel1.style.transform = "translateY(0px)";
+						pencel2.style.transform = "translateY(0px)";
+						pencel3.style.transform = "translateY(0px)";
+					},
+					outAn:function(){
+						var pencel1 = document.querySelector("#content .works .pencel1");
+						var pencel2 = document.querySelector("#content .works .pencel2");
+						var pencel3 = document.querySelector("#content .works .pencel3");
+						
+						pencel1.style.transform = "translateY(-100px)";
+						pencel2.style.transform = "translateY(100px)";
+						pencel3.style.transform = "translateY(100px)";
+					}
+				},
+				{/*第四屏*/
+					inAn:function(){
+						var Rect1 = document.querySelector("#content > .list > .about .about3 > .item:nth-child(1)");
+						var Rect2 = document.querySelector("#content > .list > .about .about3 > .item:nth-child(2)");
+						
+						Rect1.style.transform = "rotate(0deg)";
+						Rect2.style.transform = "rotate(0deg)";
+					},
+					outAn:function(){
+						var Rect1 = document.querySelector("#content > .list > .about .about3 > .item:nth-child(1)");
+						var Rect2 = document.querySelector("#content > .list > .about .about3 > .item:nth-child(2)");
+						
+						Rect1.style.transform = "rotate(45deg)";
+						Rect2.style.transform = "rotate(-45deg)";
+					}
+				},
+				{/*第五屏*/
+					inAn:function(){
+						var Rect1 = document.querySelector("#content > .list > .team .team1");
+						var Rect2 = document.querySelector("#content > .list > .team .team2");
+						
+						Rect1.style.transform = "translateX(0px)";
+						Rect2.style.transform = "translateX(0px)";
+					},
+					outAn:function(){
+						var Rect1 = document.querySelector("#content > .list > .team .team1");
+						var Rect2 = document.querySelector("#content > .list > .team .team2");
+						
+						Rect1.style.transform = "translateX(-200px)";
+						Rect2.style.transform = "translateX(200px)";
+					}
+				}
+			]
+			
+			for(var i=0; i<anArr.length; i++){
+				anArr[i]["outAn"]();/*每一屏都默认变为出场效果，进入时再变为入场效果*/
+			}
+			setTimeout(function(){
+				anArr[0].inAn();
+			},2000)
+			/*出入场动画 结束*/
+			
+			
+			/*第五屏 开始*/
+			biubiu();
+			function biubiu(){
+				var oc = null;
+				var time1 = 0;//气泡效果中的定时器1
+				var time2 = 0;//气泡效果中的定时器2
+				/*循环绑定鼠标事件*/
+				for(var i=0; i<team3Lis.length; i++){
+					/*鼠标移入事件*/
+					team3Lis[i].onmouseenter=function(){
+						for(var i=0; i<team3Lis.length; i++){
+							team3Lis[i].style.opacity = .2;//将所有的人物都变为透明效果，鼠标移入时再变为不透明
+						}
+						this.style.opacity = 1;//鼠标移入时人物变为不透明
+						addCanvas();//调用函数
+						oc.style.left = this.offsetLeft+"px";//鼠标移入的那个人物的偏移量
+					}
+				}
+				
+				function addCanvas(){
+					if(!oc){
+						oc = document.createElement("canvas");
+						oc.width = team3Lis[0].offsetWidth;
+						oc.height = team3Lis[0].offsetHeight*2/3;
+						
+						//只能给 oc 或 team3
+						/*
+						 	当指针设备移动到存在监听器的元素或其子元素的时候，
+							mouseover
+							mouseout（有冒泡）
+								
+							mouseenter
+							mouseleave（无冒泡）
+							事件就会被触发
+						*/
+						/*鼠标移出事件*/
+						team3.onmouseleave=function(){
+							for(var i=0;i<team3Lis.length;i++){
+								team3Lis[i].style.opacity = 1;
+							}
+							
+							removeCanvas();//鼠标移出时消除canvas
+						}
+
+						team3.appendChild(oc);
+						QiPao();//调用气泡效果
+					}
+				}
+				
+				/*气泡效果*/
+				function QiPao(){
+					if(oc.getContext){
+						var ctx = oc.getContext("2d");
+		
+						var arr=[];//定义数组存储圆的信息
+						
+						//将数组中的圆绘制到画布上
+						time1 = setInterval(function(){
+							console.log(arr);
+							ctx.clearRect(0, 0, oc.width, oc.height);//清除之前的
+							//动画
+							for(var i=0; i<arr.length; i++){
+								arr[i].deg += 5;
+								/* 曲线运动 */
+								arr[i].x = arr[i].startX +  Math.sin( arr[i].deg*Math.PI/180 )*arr[i].step*2;
+								arr[i].y = arr[i].startY - (arr[i].deg*Math.PI/180)*arr[i].step ;
+								
+								if(arr[i].y <= 50){//当气泡升高到一定高度时，进行清除
+									arr.splice(i,1)
+								}
+							}
+		
+							//绘制
+							for(var i=0;i<arr.length;i++){
+								ctx.save();
+								ctx.fillStyle="rgba("+arr[i].red+","+arr[i].green+","+arr[i].blue+","+arr[i].alp+")";
+								ctx.beginPath();
+								ctx.arc(arr[i].x,arr[i].y,arr[i].r,0,2*Math.PI);
+								ctx.fill();
+								ctx.restore();
+							}
+						},1000/60)
+		
+						//往arr中注入随机圆的信息
+						time2 = setInterval(function(){
+							var r = Math.random()*6+2;//圆的半径
+							var x = Math.random()*oc.width;//圆心的X坐标
+							var y = oc.height - r;//圆心的Y坐标
+							/* 随机生成RGB值 */
+							var red =   Math.round(Math.random()*255);
+							var green = Math.round(Math.random()*255);
+							var blue =  Math.round(Math.random()*255);
+							var alp = 1;//圆刚产生时是不透明的
+		
+							var deg = 0;
+							var startX = x;
+							var startY = y;
+							//曲线的运动形式
+							var step =Math.random()*20+10;
+							//将生成的圆的信息写入数组
+							arr.push({
+								x:x,
+								y:y,
+								r:r,
+								red:red,
+								green:green,
+								blue:blue,
+								alp:alp,
+								deg:deg,
+								startX:startX,
+								startY:startY,
+								step:step
+							})
+						},50)
+					}
+				}
+				
+				//用于鼠标移出时消除canvas
+				function removeCanvas(){
+					oc.remove();
+					oc = null;
+					//关闭定时器，再次调用气泡方法时会重新开启
+					clearInterval(time1);
+					clearInterval(time2);
+				}
+			}
+			/*第五屏 结束*/
+			
+			/*第四屏 开始*/
+			picBoom();
+			function picBoom(){
+				for(var i=0;i<aboutUls.length;i++){
+					 change(aboutUls[i]);
+				}
+				
+				
+				function change(UL){
+					var src = UL.dataset.src;
+					var w = UL.offsetWidth/2;
+					var h = UL.offsetHeight/2;
+					for(var i=0;i<4;i++){
+						var liNode = document.createElement("li");
+						liNode.style.width = w+"px";
+						liNode.style.height = h+"px";
+						var imgNode = document.createElement("img");
+						
+						/*
+						1. left:0    top:0
+						2. left:-w   top:0
+						3. left:0    top:-h
+						4. left:-w   top:-h
+						*/
+						
+						imgNode.style.left= -(i%2)*w+"px";
+						imgNode.style.top=  -Math.floor(i/2)*h+"px";
+						imgNode.src = src;
+						
+						liNode.appendChild(imgNode)
+						UL.appendChild(liNode);
+					}
+					
+					//var imgNodes = document.querySelectorAll("#content > .list > .about .about3 > .item > ul >li>img")
+					UL.onmouseenter=function(){
+						/*
+							1. left:0    top:0
+							2. left:-w   top:0
+							3. left:0    top:-h
+							4. left:-w   top:-h
+						*/
+						/*
+							1. left:0    top:h
+							2. left:-2w   top:0
+							3. left:w    top:-h
+							4. left:-w   top:-2h
+							
+							var arrLeft=[0,-2,1,-1];
+							var arrTop=[1,0,-1,-2];
+						*/
+						var imgNodes = this.querySelectorAll("li>img");
+						imgNodes[0].style.top = h+"px";
+						imgNodes[1].style.left = -2*w+"px";
+						imgNodes[2].style.left = w+"px";
+						imgNodes[3].style.top = -2*h+"px";
+					}
+					UL.onmouseleave=function(){
+						var imgNodes = this.querySelectorAll("li>img");
+						imgNodes[0].style.top = 0+"px";
+						imgNodes[1].style.left = -w+"px";
+						imgNodes[2].style.left = 0+"px";
+						imgNodes[3].style.top = -h+"px";
+					}
+					
+				}
+			}
+			/*第四屏 结束*/
+			
+			/*第一屏 开始*/
+			var oldIndex = 0;//用来记录上一次的索引
+			var timer3D ="dhajkdhaskj";
+			var autoIndex = 0;//自动轮播的下一屏就是手动轮播的oldIndex，因此需要记录
+
+			//home3D();一定要放在定义变量得到下面，要注意变量提升的坑
+			function home3D(){
+				for(var i=0; i<home2LiNodes.length; i++){
+					home2LiNodes[i].index = i;//取得小圆点的下标
+					//注册回调函数(同步)   执行回调函数(异步)
+					home2LiNodes[i].onclick=function(){
+						clearInterval(timer3D);//清除自动轮播
+						/*被点击的小圆点高亮显示*/
+						for(var i=0; i<home2LiNodes.length; i++){
+							home2LiNodes[i].classList.remove("active");//循环清除已有的active
+						}
+						this.classList.add("active");//给当前的点击的添加active
+
+						//小圆点从左往右点击  当前索引大于上一次索引  rightShow
+						if(this.index > oldIndex){
+							home1LiNodes[this.index].classList.remove("leftShow");
+							home1LiNodes[this.index].classList.remove("leftHide");
+							home1LiNodes[this.index].classList.remove("rightHide");
+							home1LiNodes[this.index].classList.add("rightShow");
+
+							home1LiNodes[oldIndex].classList.remove("leftShow");
+							home1LiNodes[oldIndex].classList.remove("rightShow");
+							home1LiNodes[oldIndex].classList.remove("rightHide");
+							home1LiNodes[oldIndex].classList.add("leftHide");
+						}
+						
+						//小圆点从右往左点击  当前索引小于上一次索引 leftShow
+						if(this.index < oldIndex){
+							home1LiNodes[this.index].classList.remove("rightShow");
+							home1LiNodes[this.index].classList.remove("leftHide");
+							home1LiNodes[this.index].classList.remove("rightHide");
+							home1LiNodes[this.index].classList.add("leftShow");
+
+							home1LiNodes[oldIndex].classList.remove("leftShow");
+							home1LiNodes[oldIndex].classList.remove("rightShow");
+							home1LiNodes[oldIndex].classList.remove("leftHide");
+							home1LiNodes[oldIndex].classList.add("rightHide");
+						}
+						
+						oldIndex = this.index;//更新索引，上一次点击的是哪个小圆点
+						
+				 		/*自动轮播 --> 手动轮播的同步问题
+				 		 *自动轮播一直运行...autoIndex一直在加加,自动轮播到一半时有可能触发手动轮播
+				 		 *这个时候要告诉手动轮播  到哪一屏了*/
+						autoIndex = this.index;
+						
+						//重新开启自动轮播
+						move();
+					}
+				}
+				
+				//从左向右自动轮播
+				move();
+				function move(){
+					clearInterval(timer3D);//清除上一次的定时器
+					//定时器的调用(同步)  定时器回调函数的执行(异步)
+					timer3D = setInterval(function(){
+				 		autoIndex ++;
+				 	
+				 		//播放完四个屏后重新开始
+				 		if(autoIndex == home1LiNodes.length ){
+				 			autoIndex =0;
+				 		}
+
+				 		for(var i=0; i<home2LiNodes.length; i++){
+							home2LiNodes[i].classList.remove("active");
+						}
+						home2LiNodes[autoIndex].classList.add("active");
+				 	
+				 		home1LiNodes[autoIndex].classList.remove("leftShow");
+						home1LiNodes[autoIndex].classList.remove("leftHide");
+						home1LiNodes[autoIndex].classList.remove("rightHide");
+						home1LiNodes[autoIndex].classList.add("rightShow");
+
+						home1LiNodes[oldIndex].classList.remove("leftShow");
+						home1LiNodes[oldIndex].classList.remove("rightShow");
+						home1LiNodes[oldIndex].classList.remove("rightHide");
+						home1LiNodes[oldIndex].classList.add("leftHide");
+				 	
+				 		/*自动轮播 --> 手动轮播的同步问题
+				 		 *自动轮播一直运行...autoIndex一直在加加,自动轮播到一半时有可能触发手动轮播
+				 		 *这个时候要告诉手动轮播  到哪一屏了*/
+				 		oldIndex = autoIndex;
+					 		
+					},2000);
+				}
+				
+				/*鼠标移入后停止自动轮播*/
+				home1.onmouseenter=function(){
+					clearInterval(timer3D);
+				}
+				
+				/*鼠标移出后继续自动轮播*/
+				home1.onmouseleave=function(){
+					move();
+				}
+			}
+			/*第一屏 结束*/
+			
+			/*用于传递window.onresize中需要使用到的index(同步当前屏的索引)
+			 *this.index需要同步now 因为需要知道鼠标滚轮的时候是哪一屏内容
+			 *now不需要同步this.index 因为点上去时会自动给一个index*/
+			var now =0;
+			var timer = 0;
+			/*内容区相关的代码 开始*/
+			window.onresize=function(){
+				/*
+				 调整分辨率
+					1.没有点击的时候视口只能出现一屏  重新调用contentBind();
+					2.点击后视口只能出现一屏  在1的基础上对每一屏内容的偏移量进行重新调整
+					3.小箭头的位置也需要同步
+				*/
+				/*当页面缩小时，很多尺寸与位置的值发生改变，因此需要重新绘制，
+				 *对于百分比的值，每次缩放时会自动重新绘制，因此不用手动重新绘制
+				 *而指定px的值的代码，则需要进行调整修改
+				 */
+				contentBind();
+				//cList.style.top = -index*(document.documentElement.clientHeight - head.offsetHeight)+"px";
+				//这里不在index的作用范围内
+				cList.style.top = -now*(document.documentElement.clientHeight - head.offsetHeight)+"px";
+				//小箭头的位置
+				arrowEl.style.left = liNodes[now].offsetLeft + liNodes[now].offsetWidth/2 - arrowEl.offsetWidth/2+"px";
+			}
+			
+			contentBind();
+			function contentBind(){
+				//内容区高度 = 视口高度 - 头部高度
+				content.style.height = document.documentElement.clientHeight - head.offsetHeight+'px';
+				//每个li的高度应该是相同的
+				for(var i=0;i<cLiNodes.length;i++){
+					cLiNodes[i].style.height = document.documentElement.clientHeight - head.offsetHeight+'px';
+				}
+			}
+
+			/*内容区滚轮相关 开始*/
+			if(content.addEventListener){
+				content.addEventListener("DOMMouseScroll",function(ev){
+					ev = ev||event;
+					//让fn的逻辑在DOMMouseScroll事件被频繁触发的时候只执行一次
+					//执行DOMMouseScroll之后如果再一次执行的时间间隔在200ms之内，则清除上一次的定时器
+					clearTimeout(timer);
+					timer = setTimeout(function(){
+						fn(ev)
+					},200)
+					
+				});
+			}
+			content.onmousewheel=function(ev){
+					ev = ev||event;
+					clearTimeout(timer);
+					timer = setTimeout(function(){
+						fn(ev)
+					},200)
+			};
+			function fn(ev){
+				ev=ev||event;//兼容性
+				var dir="";
+				if(ev.wheelDelta){
+					dir = ev.wheelDelta>0?"up":"down";
+				}else if(ev.detail){
+					dir = ev.detail<0?"up":"down";
+				}
+				
+				preIndex = now;/*记录上一屏，用于出入场动画*/
+				
+				switch (dir){
+					case "up":
+						if(now>0){
+							now--;
+							move(now);
+						}
+						break;
+					case "down":
+						if(now<cLiNodes.length-1){
+							now++;
+							move(now);
+						}
+						break;
+				}
+			}
+			/*内容区滚轮相关 结束*/
+			/*内容区相关的代码 结束*/
+			 
+			/*头部相关的代码 开始*/
+			headBind();
+			function headBind(){
+				firstUpNode.style.width = "100%";//用于颜色覆盖效果
+				arrowEl.style.left = firstLiNode.offsetLeft + firstLiNode.offsetWidth/2 - arrowEl.offsetWidth/2+"px";
+				for(var i=0;i<liNodes.length;i++){
+					/*这里不能将事件绑定给up，因为在css中设置了up的width为0*/
+					liNodes[i].index = i;
+					liNodes[i].onclick=function(){
+						
+						preIndex = now;/*记录上一屏，用于出入场动画*/
+						
+						/*
+						 * 这里要注意回调函数的异步问题
+						 * 	 upNodes[i].style.width = "100%"; 如果这样写，i是循环执行完后的值：5
+						 * 	 this.style.width = "100%"; 这里的this是upNodes[i]，即li，不是我们要操作的对象up
+						 * 
+						 * liNodes[i].index = i; 是同步执行的，只有回调函数中的代码是异步执行的
+						 * 这里不采用闭包，而是将循环中的i值赋值给index记录循环中的i值
+						 */
+						move(this.index);//这里的this是liNodes[i]
+						now = this.index;//将index的值传递给now
+					}
+				}
+				
+				/*右边的圆点的功能*/
+				/*点击某一按钮后跳转到对应的页面*/
+				for(var i=0;i<dotLis.length;i++){
+					dotLis[i].index = i;
+					dotLis[i].onclick=function(){
+						
+						preIndex = now;/*记录上一屏，用于出入场动画*/
+						
+						move(this.index);//这里的this是liNodes[i]
+						now = this.index;//将index的值传递给now
+					}
+				}
+			}
+			
+			//move()是内容区滚轮动画的核心
+			//move()函数中的代码是异步代码，因为在上面的回调函数中被调用了			
+			function move(index){
+				//将代码抽出写成函数后，这里的this变为window，因此，需要将之前的index作为参数传入
+				for(var i=0; i<upNodes.length; i++){
+					/*
+					 * 如果这里写的是 upNodes[i].style.width = "0";
+					 * 	  则会导致导航栏中第一次点击时正常，但之后再点击其他的时，无法出现覆盖效果
+					 * 		因为此时在内联样式中width被设置为0，而内联样式的优先级高于CSS中的样式
+					 * 			所以CSS中的up的 width: 100% 不会再起作用，因此无法出现覆盖效果
+					 * 				置为空则点击后不会在内联中绑定样式，而是直接将width属性清除
+					 */
+					/*
+					 * 这里可以直接用i，因为这里是异步代码中的同步代码
+					 */
+					upNodes[i].style.width = "";
+				}
+				upNodes[index].style.width = "100%";//用于颜色覆盖效果
+				/*
+				 * 箭头跟随移动到点击的导航栏文字下方
+				 * 	 因为每个导航栏文字的宽度是不一样的，所以这里必须用this.index
+				 * 		即点击哪个文字就计算哪个文字相应的值
+				 */
+				arrowEl.style.left = liNodes[index].offsetLeft + liNodes[index].offsetWidth/2 - arrowEl.offsetWidth/2+"px";
+				/*内容区不同内容的切换：导航栏文字的位置 × 内容上移的距离*/
+				cList.style.top = -index*(document.documentElement.clientHeight - head.offsetHeight)+"px";
+				
+				/*右边的圆点的功能*/
+				/*点击后的按钮变为当前选中状态*/
+				for(var i=0; i<dotLis.length; i++){
+					dotLis[i].className = "";
+				}
+				dotLis[index].className = "active";
+				
+				/*出入场*/
+				if(anArr[index]&&typeof anArr[index]["inAn"] === "function"){
+					anArr[index]["inAn"]();
+				}
+				if(anArr[preIndex]&&typeof anArr[preIndex]["inAn"] === "function"){
+					anArr[preIndex]["outAn"]();
+				}						
+			}
+			/*头部相关的代码 结束*/
+
+		}
+	</script>
+</html>
